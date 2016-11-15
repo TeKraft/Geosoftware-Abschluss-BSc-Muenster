@@ -1,7 +1,8 @@
 # Geosoftware-Abschluss-BSc-Muenster
 
 Mapping Stadiums Of The Olympic Games in Rio De Janerio 2016.
-Final task of the „Geosoftware“ module at University of Münster, Germany
+
+Final task of the „Geosoftware“ module at University of Münster, Germany.
 
 ##How to start working
 ###Requirements
