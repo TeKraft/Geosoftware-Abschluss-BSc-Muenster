@@ -1,0 +1,434 @@
+<!-- created by t3k on 09/2016 -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>Sportstätten bei den Spielen der XXXI. Olympiade</title>
+		<meta name="author" content="Torben Kraft"/>
+
+		<meta charset="UTF-8"/>
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+
+		<!-- scalable for mobile devices -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+
+		<!-- Import Stylesheets -->
+		<link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/css/bootstrap-theme.min.css"/> <!-- optional -->
+		<link rel="stylesheet" type="text/css" href="lib/css/leaflet.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/css/leaflet.draw.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/css/leaflet-routing-machine.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/css/Control.Geocoder.css"/>
+		<link rel="stylesheet" type="text/css" href="lib/css/lightbox.css" >
+		<link rel="stylesheet" type="text/css" href="lib/css/jquery-ui.css">
+		
+		<link rel="stylesheet" type="text/css" href="css/map.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+	</head>
+
+	<body id="body-map" onload="myFunctionEdit()">
+
+		<!-- library imports -->
+		<script type="text/javascript" src="lib/js/jsnlog.min.js"></script>
+		<script type="text/javascript" src="lib/js/jquery.min.js"></script>
+		<script type="text/javascript" src="lib/js/jquery.js"></script>
+		<script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
+
+<!-- container start -->
+		<div class="container">
+<!-- 1st row start: navbar -->
+			<div class="row">
+				<nav class="navbar navbar-inverse">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<a class="navbar-brand">Sportstätten bei den Spielen der XXXI. Olympiade</a>
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav">
+								<li class="active">
+									<a title="edit features" href="edit.html">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>EDIT
+									</a>
+								</li>
+								<li class="active">
+									<a title="go back to map" href="map.html">
+										<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>EDIT finished
+									</a>
+								</li>
+								<li class="active">
+									<img src="img/Olympic_rings_with_white_rims.svg.png" style="width:100px;"/>
+										<!-- <span aria-hidden="true"></span> -->
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+			</div>
+<!-- 1st row end: navbar -->
+<!-- ########################## -->
+<!-- 2nd row start: head buttons, map functions -->
+			<div class="row">
+				<!-- 1.1 column start -->
+				<div id="mapFunctions" class="col-md-8">
+					<!-- 1.1.1 row start -->
+					<div class="row">
+						<div class="panel-group">
+							<!-- <div class="panel panel-default"> -->
+								<div>
+									<textarea  id="saveSuccess" readonly class="form-control" rows="3" placeholder="On this site you can first load all test stadiums with the button: 'load testdata' only once.
+You can create a stadium by yourself or load a stadium (load file) and edit the attributes. You can save them into database. Also you can load all features and edit them."></textarea>
+								</div>
+<!-- show location//loateUser()								<div class="panel-body">
+									<p style="color: black" id="coordinatesOfLocation"></p>
+								</div> -->
+							<!-- </div> -->
+						</div>
+					</div>
+					<!-- 1.1.1 row end -->
+					<!-- 1.1.2 row start: load jsonfile as fileinput -->
+					<div class="row">
+						<div id="fileLoad" class="col-md-6">
+							<div class="panel-group">
+								<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+									<fieldset>
+										<h4>Json File</h4>
+										<input type='file' id='fileinput'>
+										<input type='button' id='btnLoad' value='Load' onclick='loadFile();'>
+									</fieldset>
+								</form>
+							</div>
+							<div id="dialog-confirm" title="Replace existing Feature?" style="display: none;">
+								<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>A feature with this name already exists. If you want to save the new feature, the existing data will be replaced by the new.</p>
+							</div>
+						</div>
+					</div>
+					<!-- 1.1.2 row end: load jsonfile as fileinput -->		
+				</div>
+				<!-- 1.1 column end -->
+				<!-- 1.2 column start -->
+				<div id="handbook" class="col-md-4">
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<a title="description" class="text-muted" data-toggle="collapse" data-target="#ajaxForm">
+									<span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+									mark new stadium
+									<p>1. fill in the fields<br>
+									2. click on map to set marker<br>
+									3. click on map to set polygon<br>
+									4. click save</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 1.2 column end -->
+			</div>
+<!-- 2nd row end: head buttons, map functions -->
+<!-- ########################## -->
+<!-- 3rd row start: map + loaded Data & permalink -->
+			<div class="row">
+				<!-- 3.1 column start -->
+				<div class="col-md-8">
+					<!-- 3.1.1 row start -->
+					<div class="row">
+						<div class="panel-group">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<!-- buttons for mapFunctions -->
+									<button type="button" class="btn btn-default" onclick="mapOn()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Karte einblenden</button>
+									<button type="button" class="btn btn-default" onclick="mapOff()"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span>Karte ausblenden</button>
+									<button type="button" class="btn btn-default" onclick="centerMap()"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>Karte zentrieren</button>
+								</div>
+								<div class="panel-body">
+									<div id="map"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 3.1.1 row end -->
+			<!-- start creating -->
+					<!-- 3.1.2 row start -->
+					<div class="row">
+						
+						<div id="create-1u2" class="col-md-6">
+<!-- 3.1.2.1 row start -->
+						<div class="row">
+							<div class="panel-group">
+								<div class="panel panel-default">
+									<!-- Stadium-Name -->
+									<div id="stadium-1" class="input-group">
+										<span class="input-group-addon" id="basic-1"><b>Stadium-Name</b></span>
+										<input id="stadium-name" type="text" class="form-control" placeholder="insert name of stadium" aria-describedby="basic-1"/>
+									</div>
+									<!-- Stadium-Type (String)-->
+									<div id="stadium-3" class="input-group">
+										<span class="input-group-addon" id="basic-3"><b>Stadium-Type</b></span>
+										<input id="stadium-type" type="text" class="form-control" placeholder="insert type of stadium" aria-describedby="basic-3"/>
+									</div>
+									<!-- Stadium-Capacity (number) -->
+									<div id="stadium-7" class="input-group">
+										<span class="input-group-addon" id="basic-7"><b>Stadium-Capacity</b></span>
+										<input id="stadium-capacity" type="number" pattern="^[1-9]\d*$" min="0" class="form-control" placeholder="insert capacity of stadium" aria-describedby="basic-7"/>
+									</div>
+									<!-- Stadium-Link (String)-->
+									<div id="stadium-5" class="input-group">
+										<span class="input-group-addon" id="basic-5"><b>Stadium-Link</b></span>
+										<input id="stadium-link" type="text" class="form-control" placeholder="insert link for stadium" aria-describedby="basic-5"/>
+									</div>
+								</div>
+							</div>
+						</div>
+	<!-- 3.1.2.1.1 col end -->
+	<!-- 3.1.2.1.2 col start -->
+					<div class="row">
+				<!-- 3.1.2.2.1 col start -->
+						<div class="panel-group">
+							<div class="panel panel-default">
+								<!-- Stadium-Events (object - Events) -->
+								<div id="event-1" class="input-group">
+									<span class="input-group-addon" id="basic-e1"><b>Event-Name</b></span>
+									<input id="event-name" type="text" class="form-control" placeholder="insert name of event" aria-describedby="basic-1"/>
+								</div>
+								<div id="event-2" class="input-group">
+									<span class="input-group-addon" id="basic-e2"><b>Event-Start</b></span>
+									<input id="event-start" type="date" class="form-control" placeholder="insert start of event" aria-describedby="basic-1"/>
+								</div>
+								<div id="event-3" class="input-group">
+									<span class="input-group-addon" id="basic-e3"><b>Event-End</b></span>
+									<input id="event-end" type="date" class="form-control" placeholder="insert end of event" aria-describedby="basic-1"/>
+								</div>
+								<div id="event-submit" class="form-group">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" onclick="submitEvent()">submit event</button>
+									</span>
+									<textarea  id="event-submit-view" readonly class="form-control" rows="3" placeholder="submit event name" ></textarea>
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" onclick="clearEventList()">clear event list</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+	<!-- 3.1.2.1.2 col end -->
+				</div>
+<!-- 3.1.2.1 row end -->
+<!-- 3.1.2.2 row start -->
+				<div id="create-3u4" class="col-md-6">
+					
+
+					<div class="row">
+						<div class="panel-group">
+							<div class="panel panel-default">
+								<!-- Stadium-Images (object - imgURL) -->
+								<div id="stadium-6" class="input-group">
+									<span class="input-group-addon" id="basic-6"><b>Stadium-Image</b></span>
+									<input id="stadium-imgURL" type="text" class="form-control" placeholder="insert image-URLs of stadium" aria-describedby="basic-6"/>
+									<span class="input-group-btn">
+										<button class="btn btn-secondary" type="button" onclick="submitImgURL()">Submit</button>
+									</span>
+								</div>
+								<div id="stadium-6-v" class="form-group">
+									<textarea  id="stadium-image-view" readonly class="form-control" rows="3" placeholder="submit stadium image" ></textarea>
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" onclick="clearImgList()">clear image list</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+	<!-- 3.1.2.2.1 col end -->
+	<!-- 3.1.2.2.2 col start -->
+					<div class="row">
+						<div class="panel-group">
+							<div class="panel panel-default">
+								<!-- Set MarkerCoords (object - Point) -->
+								<div id="stadium-2" class="input-group">
+									<span id="basic-2"><b>set marker coordinates</b></span>
+								</div>
+								<!-- Stadium-MarkerCoord (object - Point) -->
+								<div id="mark-1-v" class="form-group">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" id="getStadiumMarker"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>set stadium marker</button>
+									</span>
+									<textarea  id="stadium-marker-view" readonly class="form-control" rows="2" placeholder="stadium marker coord" ></textarea>
+								</div>
+								<!-- Parking-Marker (object - Point) -->
+								<div id="mark-2-v" class="form-group">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" id="getParkingMarker"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>set parking marker</button>
+									</span>
+									<textarea  id="parking-marker-view" readonly class="form-control" rows="2" placeholder="parking marker coord" ></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+	<!-- 3.1.2.2.2 col end -->
+				</div>
+			</div>
+<!-- 3.1.2.2 row end -->
+<div class="row">
+				<div id="create-5" class="col-md-12">
+					
+
+					<div class="row">
+						<div class="panel-group">
+							<div class="panel panel-default">
+								<textarea  id="polygon-view" readonly class="form-control" rows="2" placeholder="polygon coordinates" ></textarea>
+							</div>
+						</div>
+					</div>
+</div>
+</div>
+					<!-- 3.1.2 row end -->
+				</div>
+				<!-- 3.1 column end -->
+				<!-- 3.2 column start -->
+				<div id="featuredatabase" class="col-md-4">
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<!-- <a class="text-muted" data-toggle="collapse" data-target="#ajaxForm">
+									<span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+									table
+								</a> -->
+								<button title="save feature to database" type="button" class="btn btn-default" onclick="saveFeatureString()"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span>save</button>
+								<button title="load features from database for editing" type="button" class="btn btn-default" onclick="loadToEdit()"><span class="glyphicon glyphicon-download" aria-hidden="true"></span>load</button>
+								<button title="load complete testdata and save to database" type="button" class="btn btn-default" onclick="loadTestCompl()">load testdata</button>
+								<textarea  id="saveSuccess" readonly class="form-control" rows="1" placeholder="successful?!"></textarea>
+							</div>
+							<div class="panel-body">
+					<!-- form to save and load features from the DB -->
+								<table id="permalink2" class="table table-hover">
+									<thead>
+										<tr>
+											<td><b>#</b></td>
+											<td><b>name</b></td>
+										</tr>
+									</thead>
+									<tbody id="editContent"></tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 3.2 column end -->
+			</div>
+<!-- 3rd row end: map + loaded Data & permalink -->
+<!-- ########################## -->
+
+<!-- ########################## -->
+<!-- 5th row start: delete, export features -->
+		<!--
+			<div class="row"> 
+				<div class="col-md-12">
+					<div class="panel-group">
+		 -->
+						<!-- delete/export features -->
+		<!--
+						<div class="panel panel-default">
+							<div id='delete'>Delete Features</div>
+							<a href='#' id='export'>Export Features</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		 -->
+<!-- 5th row start: delete, export features -->
+<!-- ########################## -->
+<!-- 6th row start: table with details -->
+<!-- 			<div class="row"> 
+				<div class="col-md-12">
+					<div class="panel-group">
+						<div class="panel panel-default">
+							<table id="tableStadium" class="table table-hover">
+								<thead>
+									<tr>
+										<td><b>#</b></td>
+										<td><b>name</b></td>
+										<td><b>images</b></td>
+										<td><b>capacity</b></td>
+										<td><b>type</b></td>
+										<td><b>events</b></td>
+										<td><b>website</b></td>
+										<td><b>stadiumMarker</b></td>
+										<td><b>parkingMarker</b></td>
+									</tr>
+								</thead>
+								<tbody id="tableStadienContents"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div> -->
+<!-- 6th row end: table with details -->
+		</div>
+<!-- container end -->
+
+<!-- library imports -->
+		<script type="text/javascript" src="lib/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="lib/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="lib/js/leaflet.js"></script>
+		<script type="text/javascript" src="lib/js/leaflet.draw.js"></script>
+		<script type="text/javascript" src="lib/js/leaflet-routing-machine.js"></script>
+		<!-- <script type="text/javascript" src="lib/js/MicrosoftAjax.js"></script> -->
+		<script type="text/javascript" src="lib/js/Control.Geocoder.js"></script>
+		<script type="text/javascript" src="lib/js/lightbox.js"></script>
+
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<!-- 		<script type="text/javascript" src="lib/js/jquery-1.12.4.js"></script>
+		<script type="text/javascript" src="lib/js/jquery-ui.js"></script>
+		<script type="text/javascript" src="lib/js/jquery-ui.min.js"></script> -->
+
+<!-- script imports -->
+		<!-- editing and creating stadium -->
+		<script src="js/getStadiumDetails.js"></script>
+		<script src="js/clearFields.js"></script>
+		<script src="js/createJSON.js"></script>
+		<script src="js/edit.js"></script>
+		<script src="js/manipulateDrawnData.js"></script>
+		<script src="js/mapCreateMarker.js"></script>
+		<script src="js/mapSetStadiumMarker.js"></script>
+		<script src="js/mapSetParkingMarker.js"></script>
+		<script src="js/savedPolygons.js"></script>
+		<script src="js/splitString.js"></script>
+
+		<!-- draw -->
+		<script src="js/mapDraw.js"></script>
+
+		<!-- routing -->
+		<script src="js/calculateDistance.js"></script>	
+		<script src="js/routing.js"></script>
+
+		<!-- map script -->
+		<script src="js/htmlmapfunctions.js"></script>
+		<script src="js/mapBuilder.js"></script>
+
+		<!-- load testdata -->
+		<script src="js/loadTestdata.js"></script>
+
+		<!-- parse from/to DB script -->
+		<script src="js/parserAPP.js"></script>
+		<script src="js/parserDB.js"></script>
+
+
+
+<!-- 
+		<script src="js/getlocation.js"></script>
+		<script src="js/mapDrawFeatures.js"></script>
+		<script src="js/parserStadium.js"></script>
+		<script src="js/mapLayer.js"></script>
+		<script src="js/waypoints.js"></script>
+-->
+
+	</body>
+</html>

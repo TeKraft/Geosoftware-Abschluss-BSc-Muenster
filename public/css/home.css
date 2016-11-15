@@ -1,0 +1,28 @@
+/*
+body{
+	background-image:url(img/beach_olympia.jpg);
+}
+
+.panel-heading{
+	background-image: url(img/Olympic_rings_with_white_rims.svg.png);
+	background-position: center;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+}
+*/
+
+#cont {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #aaa; /*To show the boundaries of the element*/
+}
+#cont:before {
+    position: absolute;
+    content: '';
+    background: rgba(0,0,0,0.5);
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+}

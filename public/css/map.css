@@ -1,0 +1,45 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+html, body, #map {
+    
+    height: 100%;
+}
+
+/*delete, export button - position*/
+
+#delete, #export {
+
+    z-index:100;
+    background:white;
+    color:black;
+    padding:6px;
+    border-radius:4px;
+    font-family: 'Helvetica Neue';
+    cursor: pointer;
+    font-size:12px;
+    text-decoration:none;
+}
+#export {
+    top:90px;
+}
+
+
+
+/*BLUR effect*/
+/*
+.blur img {
+    
+  -webkit-transition: all 1s ease;
+     -moz-transition: all 1s ease;
+       -o-transition: all 1s ease;
+      -ms-transition: all 1s ease;
+          transition: all 1s ease;
+   
+}
+ 
+.blur img:hover {
+  -webkit-filter: blur(5px);
+}
+*/

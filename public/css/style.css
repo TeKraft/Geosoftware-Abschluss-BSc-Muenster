@@ -1,0 +1,53 @@
+/*#body-home{
+	background-color: white;
+	background: url("img/Olympiade2016Rio_Logo.jpg") no-repeat !important;
+	background-size: contain;
+}*/
+/*#navPic{
+	background: url("img/Olympic_rings_with_white_rims.svg.png") no-repeat !important;;
+}*/
+#home2{
+/*	width: 350px;
+	height: 140px;
+*/
+	float: top;
+	margin-top: 10px;
+	padding: 10px;
+	max-width: 400px;
+	height: 140px;
+/*	border: 1px solid black;*/
+}
+
+html { 
+	background: url("../img/Olympiade2016Rio_Logo.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+/*
+#homePic{
+	width: 450px;
+	height: 340px;
+	background:url("img/beach_olympia.jpg") no-repeat !important;
+	background-position: top right;
+}
+*/
+#map {
+	height: 600px;
+}
+
+#gjsoncode {
+	padding: 30px;
+}
+
+.likeButton {
+	font-weight: bold;
+	font-style:italic;
+}
+
+.active {
+	color: DarkBlue;
+}
+
