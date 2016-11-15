@@ -1,0 +1,20 @@
+{
+  "name": "gsoft-server",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Karten-basierter, interaktive Lageplan zur Darstellung der Sportstätten bei den Spielen der XXXI. Olympiade",
+  "main": "./server.js",
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "author": [
+    "Torben Kraft <tkraf03@uni-muenster.de"
+  ],
+  "dependencies": {
+    "body-parser": "~1.13.1",
+    "colors": "^1.1.2",
+    "express": "~4.13.0",
+    "mongoose": "~4.0.6",
+    "nodemon": "^1.9.2"
+  }
+}
