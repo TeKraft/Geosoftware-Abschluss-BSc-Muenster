@@ -30,7 +30,7 @@ Finally you have to start the server, doing this by going tot he directory of th
 Use the following code:
 ```
 npm install       // for installing dependencies
-npm start         // for starting server.
+npm start         // for starting server
 ```
 You get access to the website by [http://localhost:2000](http://localhost:2000).
 
