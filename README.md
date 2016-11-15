@@ -37,4 +37,4 @@ You get access to the website by [http://localhost:2000](http://localhost:2000).
 A detailed tutorial getting started with node.js and mongoDB you can find [here](http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/).
 
 ###Authors
-**Torben Kraft** - BSc. Geoinformatics student at University of Münster, Germany - [GitHub](https://github.com/TeKraft)
+[**Torben Kraft**](https://github.com/TeKraft) - BSc. Geoinformatics student at University of Münster, Germany
